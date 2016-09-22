@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        SqlConnection myConnection;
+        MySqlConnection myConnection;
 
         public Form1()
         {
@@ -24,21 +17,12 @@ namespace WindowsFormsApplication1
 
         private void ButConnect_Click(object sender, EventArgs e)
         {
-            /*
-            myConnection = new SqlConnection("user id=" + BoxUser.Text +
-                                                   ";password="+ BoxPassword.Text +";server=" + BoxServer.Text +
-                                                   ";Trusted_Connection=yes" +
-                                                   ";database=app" +
-                                                   ";connection timeout=30");
-            */
-            myConnection = new SqlConnection("user id=root;" +
-                                       "password=;server=localhost;" +
-                                       "Trusted_Connection=True;" +
-                                       "database=app; " +
-                                       "connection timeout=30");
+            //myConnection = new MySqlConnection("server = " + BoxServer.Text + "; user id = " + BoxUser.Text + ";database = app" + ";password= " + BoxPassword.Text);
+            myConnection = new MySqlConnection("server = " + BoxServer.Text + "; user id = " + BoxUser.Text + ";database = app");
+
             Connect();
 
-            //test();
+            test();
                 
             
 
@@ -49,6 +33,7 @@ namespace WindowsFormsApplication1
             {
                 myConnection.Open();
                 ButConnect.BackColor = System.Drawing.Color.LightGreen;
+                TabControl.SelectedIndex = 1;
             }
             catch (Exception e)
             {
@@ -60,14 +45,12 @@ namespace WindowsFormsApplication1
         {
             try
             {
-                SqlDataReader myReader = null;
-                SqlCommand myCommand = new SqlCommand("select * from questions",
-                                                         myConnection);
-                myReader = myCommand.ExecuteReader();
+                MySqlCommand myCommand = new MySqlCommand("select * from questions", myConnection);
+                MySqlDataReader myReader = myCommand.ExecuteReader();
                 while (myReader.Read())
                 {
-                    System.Diagnostics.Debug.WriteLine(myReader["Column1"].ToString());
-                    System.Diagnostics.Debug.WriteLine(myReader["Column2"].ToString());
+                    Console.WriteLine(myReader.GetInt32(0).ToString() + " " +
+                    myReader.GetString(1) + " " + myReader.GetString(2));
                 }
             }
             catch (Exception e)
