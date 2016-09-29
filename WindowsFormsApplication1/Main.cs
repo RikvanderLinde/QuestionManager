@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         MySqlConnection myConnection;
         List<questionbox> questions = new List<questionbox> { };
@@ -15,7 +15,7 @@ namespace WindowsFormsApplication1
         string Answer1, Answer2, Answer3, Next1, Next2, Next3, Question, Info;
         int Type;
 
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
