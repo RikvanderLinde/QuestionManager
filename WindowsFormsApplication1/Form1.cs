@@ -12,6 +12,8 @@ namespace WindowsFormsApplication1
         MySqlConnection myConnection;
         List<questionbox> questions = new List<questionbox> { };
         int selected = 0;
+        string Answer1, Answer2, Answer3, Next1, Next2, Next3, Question, Info;
+        int Type;
 
         public Form1()
         {
@@ -58,7 +60,7 @@ namespace WindowsFormsApplication1
             {
                 myConnection.Open();
                 ButConnect.BackColor = System.Drawing.Color.LightGreen;
-                tabs.SelectedTab = Overview;
+                tabs.SelectedTab = tabOverview;
             }
             catch (Exception e)
             {
@@ -86,12 +88,12 @@ namespace WindowsFormsApplication1
                     if (!myReader.IsDBNull(1)) Question = myReader.GetString(1);
                     if (!myReader.IsDBNull(2)) Type     = myReader.GetString(2);
                     if (!myReader.IsDBNull(3)) Info     = myReader.GetString(3);
-                    if (!myReader.IsDBNull(4)) Answer1  = myReader.GetString(4);
-                    if (!myReader.IsDBNull(5)) Next1    = myReader.GetString(5);
-                    if (!myReader.IsDBNull(6)) Answer2  = myReader.GetString(6);
-                    if (!myReader.IsDBNull(7)) Next2    = myReader.GetString(7);
-                    if (!myReader.IsDBNull(8)) Answer3  = myReader.GetString(8);
-                    if (!myReader.IsDBNull(9)) Next3    = myReader.GetString(9);
+                    if (!myReader.IsDBNull(5)) Answer1  = myReader.GetString(5);
+                    if (!myReader.IsDBNull(6)) Next1    = myReader.GetString(6);
+                    if (!myReader.IsDBNull(7)) Answer2  = myReader.GetString(7);
+                    if (!myReader.IsDBNull(8)) Next2    = myReader.GetString(8);
+                    if (!myReader.IsDBNull(9)) Answer3  = myReader.GetString(9);
+                    if (!myReader.IsDBNull(10)) Next3    = myReader.GetString(10);
 
                     text_Questions.Text = text_Questions.Text + $"ID: {Id}\t Question: {Question}\t Type: {Type}\t Info: {Info}\n";
                     
@@ -116,7 +118,7 @@ namespace WindowsFormsApplication1
                 while (myReader.Read())
                 {
                     if (!myReader.IsDBNull(0)) BoxQuestion.Text = myReader.GetString(0);
-                    if (!myReader.IsDBNull(1)) BoxType.Text     = myReader.GetInt32(1).ToString();
+                    if (!myReader.IsDBNull(1)) ComboBoxType.SelectedIndex = myReader.GetInt32(1);
                     if (!myReader.IsDBNull(2)) BoxInfo.Text     = myReader.GetString(2);
                     if (!myReader.IsDBNull(3)) BoxAnswer1.Text  = myReader.GetString(3);
                     if (!myReader.IsDBNull(4)) BoxNext1.Text    = myReader.GetInt32(4).ToString();
@@ -183,32 +185,38 @@ namespace WindowsFormsApplication1
                 tableOverview.RowCount = questions.Count;
                 tableOverview.Controls.Add(b, 0, row);
                 
-                if (questionbox.next1 != 0)
+                if (questionbox.next1 != -1)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
-                    l.Text = 
+                    l.Text =
+                    $"Type is : {ComboBoxType.Items[questionbox.type] }"
+                    + Environment.NewLine +
                     $"Answer is : {questionbox.answer1}"
                     + Environment.NewLine +
                     $"Next Question : {questionbox.next1.ToString()}";
                     tableOverview.Controls.Add(l, 1, row);
                 }
 
-                if (questionbox.next2 != 0)
+                if (questionbox.next2 != -1)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
-                    l.Text =
+                    l.Text = 
+                    $"Type is : {ComboBoxType.Items[questionbox.type] }"
+                    + Environment.NewLine +
                     $"Answer is : {questionbox.answer2}"
                     + Environment.NewLine +
                     $"Next Question : {questionbox.next2.ToString()}";
                     tableOverview.Controls.Add(l, 1, row);
                 }
-                if (questionbox.next3 != 0)
+                if (questionbox.next3 != -1)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
                     l.Text =
+                    $"Type is : {ComboBoxType.Items[questionbox.type] }"
+                    + Environment.NewLine + 
                     $"Answer is : {questionbox.answer3}"
                     + Environment.NewLine +
                     $"Next Question : {questionbox.next3.ToString()}";
@@ -218,20 +226,97 @@ namespace WindowsFormsApplication1
             }
             tableOverview.Visible = true;
         }
+
+        //Question Type Changed listener
+        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            indexChange();
+        }
+
+        //Question Type Changed
+        void indexChange()
+        {
+
+            switch (ComboBoxType.SelectedIndex)
+            {
+                case 0: //Ok question
+                    BoxAnswer1.Text = "Ok";
+                    BoxAnswer1.Enabled = false;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = "-1";
+                    BoxNext2.Enabled = false;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+                case 1: //Yes-No question
+                    BoxAnswer1.Text = "Yes";
+                    BoxAnswer1.Enabled = false;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "No";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = Next2;
+                    BoxNext2.Enabled = true;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+                case 2: //Multiple choice question
+                    BoxAnswer1.Text = Answer1;
+                    BoxAnswer1.Enabled = true;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = Answer2;
+                    BoxAnswer2.Enabled = true;
+                    BoxNext2.Text = Next2;
+                    BoxNext2.Enabled = true;
+                    BoxAnswer3.Text = Answer3;
+                    BoxAnswer3.Enabled = true;
+                    BoxNext3.Text = Next3;
+                    BoxNext3.Enabled = true;
+                    break;
+                case 3: //Open question
+                    BoxAnswer1.Text = Answer1;
+                    BoxAnswer1.Enabled = true;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = "-1";
+                    BoxNext2.Enabled = false;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+            }
+        }
         
+        //Save Answers
+        private void save()
+        {
+            Answer1 = BoxAnswer1.Text;
+            Answer2 = BoxAnswer2.Text;
+            Answer3 = BoxAnswer3.Text;
+            Next1 = BoxNext1.Text;
+            Next2 = BoxNext2.Text;
+            Next3 = BoxNext3.Text;
+            Question = BoxQuestion.Text;
+            Type = ComboBoxType.SelectedIndex;
+            Info = BoxInfo.Text;
+
+        }
+
         //Edit Question
         private void butEdit_Click(object sender, EventArgs e)
         {
-            string Answer1 = BoxAnswer1.Text;
-            string Answer2 = BoxAnswer2.Text;
-            string Answer3 = BoxAnswer3.Text;
-            string Next1 = BoxNext1.Text;
-            string Next2 = BoxNext2.Text;
-            string Next3 = BoxNext3.Text;
-            string Question = BoxQuestion.Text;
-            string Type = BoxType.Text;
-            string Info = BoxInfo.Text;
-
+            save();
             try
             {
                 MySqlCommand myCommand = new MySqlCommand($"update questions set Question='{Question}', Type='{Type}', Info ='{Info}' where ID = {selected}", myConnection);
@@ -250,7 +335,7 @@ namespace WindowsFormsApplication1
             {
                 Console.WriteLine(f.ToString());
             }
-            edit();
+            tabs.SelectedTab = tabOverview;
         }
 
         //Add Question
@@ -328,19 +413,21 @@ namespace WindowsFormsApplication1
         //Change Tab
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabs.SelectedTab == Database)
+            if (tabs.SelectedTab == tabDatabase)
             {
                 read();
             }
 
-            if (tabs.SelectedTab == Overview)
+            if (tabs.SelectedTab == tabOverview)
             {
                 fill();
             }
 
-            if (tabs.SelectedTab == Question)
+            if (tabs.SelectedTab == tabQuestion)
             {
                 edit();
+                save();
+                indexChange();
             }
         }
 
@@ -362,5 +449,7 @@ namespace WindowsFormsApplication1
         {
             close();
         }
+
+        
     }
 }
