@@ -1,8 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
@@ -34,23 +32,12 @@ namespace WindowsFormsApplication1
             public int next3;
         }
 
+        #region Connect
         //Go to Connect
         private void ButConnect_Click(object sender, EventArgs e)
         {
-            if (BoxPassword.Text == "")
-            {
-                myConnection = new MySqlConnection("server = " + BoxServer.Text + "; user id = " + BoxUser.Text + ";database = app");
-            }
-            else
-            {
-                myConnection = new MySqlConnection("server = " + BoxServer.Text + "; user id = " + BoxUser.Text + ";database = app" + ";password= " + BoxPassword.Text);
-            }
-
+            myConnection = new MySqlConnection("server = " + BoxServer.Text + "; user id = " + BoxUser.Text + ";password= " + BoxPassword.Text);
             Connect();
-
-                
-            
-
         }
 
         //Connect to DB
@@ -60,7 +47,7 @@ namespace WindowsFormsApplication1
             {
                 myConnection.Open();
                 ButConnect.BackColor = System.Drawing.Color.LightGreen;
-                tabs.SelectedTab = tabOverview;
+                databaseGet();
             }
             catch (Exception e)
             {
@@ -68,7 +55,117 @@ namespace WindowsFormsApplication1
                 Console.WriteLine(e.ToString());
             }
         }
+        #endregion
 
+        #region DataBase Select
+        //Get Databases
+        private void databaseGet()
+        {
+            MySqlCommand myCommand = new MySqlCommand("show databases", myConnection);
+            MySqlDataReader Reader;
+            Reader = myCommand.ExecuteReader();
+            listQuestionLists.Items.Clear();
+            while (Reader.Read())
+            {
+                string row = "";
+                for (int i = 0; i < Reader.FieldCount; i++)
+                    row += Reader.GetValue(i).ToString();
+
+                if (row.Contains("qst_"))
+                {
+                    row = row.Remove(0, 4);
+                    listQuestionLists.Items.Add(row);
+                }
+            }
+            Reader.Close();
+        }
+
+        //Database Select
+        private void butSelect_Click(object sender, EventArgs e)
+        {
+            tabs.SelectedTab = tabOverview;
+        }
+
+        //Popup
+        public string ShowMyDialogBox()
+        {
+            Popup testDialog = new Popup();
+            string data = "";
+            // Show testDialog as a modal dialog and determine if DialogResult = OK.
+            if (testDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                // Read the contents of testDialog's TextBox.
+                data = testDialog.textBox1.Text;
+            }
+            else
+            {
+                data = "Cancelled";
+            }
+            testDialog.Dispose();
+            return data;
+        }
+
+        //Database Add
+        private void butAdd_Click(object sender, EventArgs e)
+        {
+            string name = "qst_" +ShowMyDialogBox();
+            try
+            {
+                MySqlCommand myCommand = new MySqlCommand($"CREATE DATABASE {name}", myConnection);
+                myCommand.ExecuteNonQuery();
+                databaseGet();
+
+                #region tables
+                string command =
+                  "USE "+name+";CREATE TABLE questions"
+                + "("
+                + "ID int NOT NULL AUTO_INCREMENT,"
+                + "LastName varchar(255) NOT NULL,"
+                + "FirstName varchar(255),"
+                + "Address varchar(255),"
+                + "City varchar(255),"
+                + "PRIMARY KEY(ID)"
+                + ")";
+                #endregion
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine(f.ToString());
+            }
+        }
+
+        //Database Remove
+        private void butRemove_Click(object sender, EventArgs e)
+        {
+            string select = "";
+            try
+            {
+                select = listQuestionLists.SelectedItem.ToString();
+            }
+            catch { }
+
+            if(select != "")
+            {
+                select = "qst_" + select;
+                if (DialogResult.Yes == MessageBox.Show("Are you sure you want to remove the database?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                {
+                    try
+                    {
+                        MySqlCommand myCommand = new MySqlCommand($"DROP DATABASE {select}", myConnection);
+                        myCommand.ExecuteNonQuery();
+                    }
+                    catch (Exception f)
+                    {
+                        Console.WriteLine(f.ToString());
+                    }
+                    databaseGet();
+                }
+            }
+        }
+    
+        #endregion
+
+        #region Database Tab
         //Database Tab
         private void read()
         {
@@ -93,7 +190,7 @@ namespace WindowsFormsApplication1
                     if (!myReader.IsDBNull(7)) Answer2  = myReader.GetString(7);
                     if (!myReader.IsDBNull(8)) Next2    = myReader.GetString(8);
                     if (!myReader.IsDBNull(9)) Answer3  = myReader.GetString(9);
-                    if (!myReader.IsDBNull(10)) Next3    = myReader.GetString(10);
+                    if (!myReader.IsDBNull(10)) Next3   = myReader.GetString(10);
 
                     text_Questions.Text = text_Questions.Text + $"ID: {Id}\t Question: {Question}\t Type: {Type}\t Info: {Info}\n";
                     
@@ -107,7 +204,9 @@ namespace WindowsFormsApplication1
             }
 
         }
+        #endregion
 
+        #region Question edit Tab
         //Questions Tab
         private void edit()
         {
@@ -134,7 +233,95 @@ namespace WindowsFormsApplication1
                 Console.WriteLine(e.ToString());
             }
         }
+        
+        //Question Type Changed listener
+        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            indexChange();
+        }
 
+        //Question Type Changed
+        void indexChange()
+        {
+
+            switch (ComboBoxType.SelectedIndex)
+            {
+                case 0: //Ok question
+                    BoxAnswer1.Text = "Ok";
+                    BoxAnswer1.Enabled = false;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = "-1";
+                    BoxNext2.Enabled = false;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+                case 1: //Yes-No question
+                    BoxAnswer1.Text = "Yes";
+                    BoxAnswer1.Enabled = false;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "No";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = Next2;
+                    BoxNext2.Enabled = true;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+                case 2: //Multiple choice question
+                    BoxAnswer1.Text = Answer1;
+                    BoxAnswer1.Enabled = true;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = Answer2;
+                    BoxAnswer2.Enabled = true;
+                    BoxNext2.Text = Next2;
+                    BoxNext2.Enabled = true;
+                    BoxAnswer3.Text = Answer3;
+                    BoxAnswer3.Enabled = true;
+                    BoxNext3.Text = Next3;
+                    BoxNext3.Enabled = true;
+                    break;
+                case 3: //Open question
+                    BoxAnswer1.Text = Answer1;
+                    BoxAnswer1.Enabled = true;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = "-1";
+                    BoxNext2.Enabled = false;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "-1";
+                    BoxNext3.Enabled = false;
+                    break;
+            }
+        }
+
+        //Save Answers
+        private void save()
+        {
+            Answer1 = BoxAnswer1.Text;
+            Answer2 = BoxAnswer2.Text;
+            Answer3 = BoxAnswer3.Text;
+            Next1 = BoxNext1.Text;
+            Next2 = BoxNext2.Text;
+            Next3 = BoxNext3.Text;
+            Question = BoxQuestion.Text;
+            Type = ComboBoxType.SelectedIndex;
+            Info = BoxInfo.Text;
+        }
+
+        #endregion
+
+        #region Overview Tab
         //Overview Tab
         private void fill()
         {
@@ -225,92 +412,6 @@ namespace WindowsFormsApplication1
                 row++;
             }
             tableOverview.Visible = true;
-        }
-
-        //Question Type Changed listener
-        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            indexChange();
-        }
-
-        //Question Type Changed
-        void indexChange()
-        {
-
-            switch (ComboBoxType.SelectedIndex)
-            {
-                case 0: //Ok question
-                    BoxAnswer1.Text = "Ok";
-                    BoxAnswer1.Enabled = false;
-                    BoxNext1.Text = Next1;
-                    BoxNext1.Enabled = true;
-                    BoxAnswer2.Text = "";
-                    BoxAnswer2.Enabled = false;
-                    BoxNext2.Text = "-1";
-                    BoxNext2.Enabled = false;
-                    BoxAnswer3.Text = "";
-                    BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
-                    BoxNext3.Enabled = false;
-                    break;
-                case 1: //Yes-No question
-                    BoxAnswer1.Text = "Yes";
-                    BoxAnswer1.Enabled = false;
-                    BoxNext1.Text = Next1;
-                    BoxNext1.Enabled = true;
-                    BoxAnswer2.Text = "No";
-                    BoxAnswer2.Enabled = false;
-                    BoxNext2.Text = Next2;
-                    BoxNext2.Enabled = true;
-                    BoxAnswer3.Text = "";
-                    BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
-                    BoxNext3.Enabled = false;
-                    break;
-                case 2: //Multiple choice question
-                    BoxAnswer1.Text = Answer1;
-                    BoxAnswer1.Enabled = true;
-                    BoxNext1.Text = Next1;
-                    BoxNext1.Enabled = true;
-                    BoxAnswer2.Text = Answer2;
-                    BoxAnswer2.Enabled = true;
-                    BoxNext2.Text = Next2;
-                    BoxNext2.Enabled = true;
-                    BoxAnswer3.Text = Answer3;
-                    BoxAnswer3.Enabled = true;
-                    BoxNext3.Text = Next3;
-                    BoxNext3.Enabled = true;
-                    break;
-                case 3: //Open question
-                    BoxAnswer1.Text = Answer1;
-                    BoxAnswer1.Enabled = true;
-                    BoxNext1.Text = Next1;
-                    BoxNext1.Enabled = true;
-                    BoxAnswer2.Text = "";
-                    BoxAnswer2.Enabled = false;
-                    BoxNext2.Text = "-1";
-                    BoxNext2.Enabled = false;
-                    BoxAnswer3.Text = "";
-                    BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
-                    BoxNext3.Enabled = false;
-                    break;
-            }
-        }
-        
-        //Save Answers
-        private void save()
-        {
-            Answer1 = BoxAnswer1.Text;
-            Answer2 = BoxAnswer2.Text;
-            Answer3 = BoxAnswer3.Text;
-            Next1 = BoxNext1.Text;
-            Next2 = BoxNext2.Text;
-            Next3 = BoxNext3.Text;
-            Question = BoxQuestion.Text;
-            Type = ComboBoxType.SelectedIndex;
-            Info = BoxInfo.Text;
-
         }
 
         //Edit Question
@@ -410,6 +511,8 @@ namespace WindowsFormsApplication1
             }
         }
 
+        #endregion
+        
         //Change Tab
         private void tabs_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -29,19 +29,25 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.BoxServer = new System.Windows.Forms.TextBox();
-            this.BoxPassword = new System.Windows.Forms.TextBox();
-            this.BoxUser = new System.Windows.Forms.TextBox();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabConnection = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButConnect = new System.Windows.Forms.Button();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.BoxPassword = new System.Windows.Forms.TextBox();
+            this.BoxUser = new System.Windows.Forms.TextBox();
+            this.BoxServer = new System.Windows.Forms.TextBox();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.ButConnect = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.butSelect = new System.Windows.Forms.Button();
+            this.butAdd = new System.Windows.Forms.Button();
+            this.butRemove = new System.Windows.Forms.Button();
+            this.listQuestionLists = new System.Windows.Forms.ListBox();
             this.tabOverview = new System.Windows.Forms.TabPage();
             this.tableOverview = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -78,10 +84,21 @@
             this.answersTableAdapter1 = new WindowsFormsApplication1.appDataSetTableAdapters.answersTableAdapter();
             this.tabs.SuspendLayout();
             this.tabConnection.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.tabOverview.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tabQuestion.SuspendLayout();
@@ -95,63 +112,6 @@
             this.tabDatabase.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox9
-            // 
-            this.textBox9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox9.Location = new System.Drawing.Point(0, 40);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.ReadOnly = true;
-            this.textBox9.Size = new System.Drawing.Size(191, 20);
-            this.textBox9.TabIndex = 2;
-            this.textBox9.Text = "Server :";
-            // 
-            // textBox8
-            // 
-            this.textBox8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox8.Location = new System.Drawing.Point(0, 0);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ReadOnly = true;
-            this.textBox8.Size = new System.Drawing.Size(191, 20);
-            this.textBox8.TabIndex = 1;
-            this.textBox8.Text = "Password :";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(0, 20);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(191, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "User :";
-            // 
-            // BoxServer
-            // 
-            this.BoxServer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BoxServer.Location = new System.Drawing.Point(0, 0);
-            this.BoxServer.Name = "BoxServer";
-            this.BoxServer.Size = new System.Drawing.Size(350, 20);
-            this.BoxServer.TabIndex = 3;
-            this.BoxServer.Text = "localhost";
-            // 
-            // BoxPassword
-            // 
-            this.BoxPassword.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BoxPassword.Location = new System.Drawing.Point(0, 20);
-            this.BoxPassword.Name = "BoxPassword";
-            this.BoxPassword.PasswordChar = '*';
-            this.BoxPassword.Size = new System.Drawing.Size(350, 20);
-            this.BoxPassword.TabIndex = 2;
-            // 
-            // BoxUser
-            // 
-            this.BoxUser.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BoxUser.Location = new System.Drawing.Point(0, 40);
-            this.BoxUser.Name = "BoxUser";
-            this.BoxUser.Size = new System.Drawing.Size(350, 20);
-            this.BoxUser.TabIndex = 1;
-            this.BoxUser.Text = "root";
-            // 
             // tabs
             // 
             this.tabs.Controls.Add(this.tabConnection);
@@ -164,11 +124,10 @@
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(573, 419);
             this.tabs.TabIndex = 0;
-            this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_SelectedIndexChanged);
             // 
             // tabConnection
             // 
-            this.tabConnection.Controls.Add(this.tableLayoutPanel1);
+            this.tabConnection.Controls.Add(this.splitContainer1);
             this.tabConnection.Location = new System.Drawing.Point(4, 22);
             this.tabConnection.Name = "tabConnection";
             this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
@@ -177,75 +136,216 @@
             this.tabConnection.Text = "Connection";
             this.tabConnection.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel1
+            // splitContainer1
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.ButConnect, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 278F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(559, 387);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer4);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer1.Size = new System.Drawing.Size(559, 387);
+            this.splitContainer1.SplitterDistance = 60;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.panel2);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.panel1);
+            this.splitContainer4.Size = new System.Drawing.Size(559, 60);
+            this.splitContainer4.SplitterDistance = 210;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            this.panel2.AutoSize = true;
+            this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel2.Controls.Add(this.textBox8);
+            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.textBox9);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(210, 60);
+            this.panel2.TabIndex = 7;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox8.Location = new System.Drawing.Point(0, 40);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.ReadOnly = true;
+            this.textBox8.Size = new System.Drawing.Size(210, 20);
+            this.textBox8.TabIndex = 1;
+            this.textBox8.Text = "Password :";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Location = new System.Drawing.Point(0, 20);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(210, 20);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "User :";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox9.Location = new System.Drawing.Point(0, 0);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.ReadOnly = true;
+            this.textBox9.Size = new System.Drawing.Size(210, 20);
+            this.textBox9.TabIndex = 2;
+            this.textBox9.Text = "Server :";
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.BoxPassword);
+            this.panel1.Controls.Add(this.BoxUser);
+            this.panel1.Controls.Add(this.BoxServer);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(345, 60);
+            this.panel1.TabIndex = 6;
+            // 
+            // BoxPassword
+            // 
+            this.BoxPassword.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BoxPassword.Location = new System.Drawing.Point(0, 40);
+            this.BoxPassword.Name = "BoxPassword";
+            this.BoxPassword.PasswordChar = '*';
+            this.BoxPassword.Size = new System.Drawing.Size(345, 20);
+            this.BoxPassword.TabIndex = 2;
+            this.BoxPassword.Text = "test";
+            // 
+            // BoxUser
+            // 
+            this.BoxUser.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BoxUser.Location = new System.Drawing.Point(0, 20);
+            this.BoxUser.Name = "BoxUser";
+            this.BoxUser.Size = new System.Drawing.Size(345, 20);
+            this.BoxUser.TabIndex = 1;
+            this.BoxUser.Text = "questions";
+            // 
+            // BoxServer
+            // 
+            this.BoxServer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BoxServer.Location = new System.Drawing.Point(0, 0);
+            this.BoxServer.Name = "BoxServer";
+            this.BoxServer.Size = new System.Drawing.Size(345, 20);
+            this.BoxServer.TabIndex = 3;
+            this.BoxServer.Text = "192.168.178.71";
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.ButConnect);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.tableLayoutPanel1);
+            this.splitContainer3.Panel2.Controls.Add(this.listQuestionLists);
+            this.splitContainer3.Size = new System.Drawing.Size(559, 323);
+            this.splitContainer3.SplitterDistance = 25;
+            this.splitContainer3.TabIndex = 0;
             // 
             // ButConnect
             // 
             this.ButConnect.BackColor = System.Drawing.Color.Orange;
             this.ButConnect.Dock = System.Windows.Forms.DockStyle.Top;
             this.ButConnect.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ButConnect.Location = new System.Drawing.Point(3, 112);
+            this.ButConnect.Location = new System.Drawing.Point(0, 0);
             this.ButConnect.Name = "ButConnect";
-            this.ButConnect.Size = new System.Drawing.Size(553, 23);
-            this.ButConnect.TabIndex = 0;
+            this.ButConnect.Size = new System.Drawing.Size(559, 23);
+            this.ButConnect.TabIndex = 2;
             this.ButConnect.Text = "Connect";
             this.ButConnect.UseVisualStyleBackColor = false;
             this.ButConnect.Click += new System.EventHandler(this.ButConnect_Click);
             // 
-            // tableLayoutPanel2
+            // tableLayoutPanel1
             // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.8047F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.1953F));
-            this.tableLayoutPanel2.Controls.Add(this.panel1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.panel2, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel2.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(553, 103);
-            this.tableLayoutPanel2.TabIndex = 0;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.Controls.Add(this.butSelect, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.butAdd, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.butRemove, 2, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 244);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(559, 50);
+            this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // panel1
+            // butSelect
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Controls.Add(this.BoxUser);
-            this.panel1.Controls.Add(this.BoxPassword);
-            this.panel1.Controls.Add(this.BoxServer);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(200, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(350, 173);
-            this.panel1.TabIndex = 4;
+            this.butSelect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.butSelect.Location = new System.Drawing.Point(3, 3);
+            this.butSelect.Name = "butSelect";
+            this.butSelect.Size = new System.Drawing.Size(273, 44);
+            this.butSelect.TabIndex = 0;
+            this.butSelect.Text = "Select Database";
+            this.butSelect.UseVisualStyleBackColor = true;
+            this.butSelect.Click += new System.EventHandler(this.butSelect_Click);
             // 
-            // panel2
+            // butAdd
             // 
-            this.panel2.AutoSize = true;
-            this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel2.Controls.Add(this.textBox9);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.textBox8);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(191, 173);
-            this.panel2.TabIndex = 5;
+            this.butAdd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.butAdd.Location = new System.Drawing.Point(282, 3);
+            this.butAdd.Name = "butAdd";
+            this.butAdd.Size = new System.Drawing.Size(133, 44);
+            this.butAdd.TabIndex = 1;
+            this.butAdd.Text = "Add Database";
+            this.butAdd.UseVisualStyleBackColor = true;
+            this.butAdd.Click += new System.EventHandler(this.butAdd_Click);
+            // 
+            // butRemove
+            // 
+            this.butRemove.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.butRemove.Location = new System.Drawing.Point(421, 3);
+            this.butRemove.Name = "butRemove";
+            this.butRemove.Size = new System.Drawing.Size(135, 44);
+            this.butRemove.TabIndex = 2;
+            this.butRemove.Text = "Remove Database";
+            this.butRemove.UseVisualStyleBackColor = true;
+            this.butRemove.Click += new System.EventHandler(this.butRemove_Click);
+            // 
+            // listQuestionLists
+            // 
+            this.listQuestionLists.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listQuestionLists.FormattingEnabled = true;
+            this.listQuestionLists.Location = new System.Drawing.Point(0, 0);
+            this.listQuestionLists.Name = "listQuestionLists";
+            this.listQuestionLists.Size = new System.Drawing.Size(559, 238);
+            this.listQuestionLists.Sorted = true;
+            this.listQuestionLists.TabIndex = 0;
             // 
             // tabOverview
             // 
@@ -630,23 +730,35 @@
             // 
             this.answersTableAdapter1.ClearBeforeFill = true;
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(573, 419);
             this.Controls.Add(this.tabs);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Form1";
             this.tabs.ResumeLayout(false);
             this.tabConnection.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.tabOverview.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tabQuestion.ResumeLayout(false);
@@ -682,19 +794,8 @@
         private System.Windows.Forms.TextBox BoxAnswer2;
         private System.Windows.Forms.TextBox BoxInfo;
         private System.Windows.Forms.TextBox BoxQuestion;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox BoxUser;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox BoxServer;
-        private System.Windows.Forms.TextBox BoxPassword;
-        private System.Windows.Forms.Button ButConnect;
         private System.Windows.Forms.TextBox textBox22;
         private System.Windows.Forms.TabPage tabConnection;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox textBox21;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TabPage tabDatabase;
@@ -715,6 +816,23 @@
         private System.Windows.Forms.Button butaddq;
         private System.Windows.Forms.Button butremoveq;
         private System.Windows.Forms.ComboBox ComboBoxType;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.Button ButConnect;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox BoxPassword;
+        private System.Windows.Forms.TextBox BoxUser;
+        private System.Windows.Forms.TextBox BoxServer;
+        private System.Windows.Forms.ListBox listQuestionLists;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button butSelect;
+        private System.Windows.Forms.Button butAdd;
+        private System.Windows.Forms.Button butRemove;
     }
 }
 
