@@ -80,8 +80,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.text_Questions = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tabUsers = new System.Windows.Forms.TabPage();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tabs.SuspendLayout();
             this.tabConnection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -641,10 +641,10 @@
             this.ComboBoxType.IntegralHeight = false;
             this.ComboBoxType.ItemHeight = 12;
             this.ComboBoxType.Items.AddRange(new object[] {
+            "Open",
             "Ok",
             "Yes / No",
-            "Multiple Choice",
-            "Open"});
+            "Multiple Choice"});
             this.ComboBoxType.Location = new System.Drawing.Point(0, 220);
             this.ComboBoxType.Margin = new System.Windows.Forms.Padding(0);
             this.ComboBoxType.Name = "ComboBoxType";
@@ -723,11 +723,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Questions : ";
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // tabUsers
             // 
             this.tabUsers.Location = new System.Drawing.Point(4, 22);
@@ -736,6 +731,11 @@
             this.tabUsers.TabIndex = 4;
             this.tabUsers.Text = "Users";
             this.tabUsers.UseVisualStyleBackColor = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // Main
             // 

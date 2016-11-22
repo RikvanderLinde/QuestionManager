@@ -269,24 +269,39 @@ namespace WindowsFormsApplication1
         //Question Type Changed
         void indexChange()
         {
-
+            // 0    ,  1  ,  2      ,  3        ,  4
+            //"Open", "Ok", "Yes/No", "Multiple", "Picture"
             switch (ComboBoxType.SelectedIndex)
             {
-                case 0: //Ok question
+                case 0: //Open question
+                    BoxAnswer1.Text = Answer1;
+                    BoxAnswer1.Enabled = true;
+                    BoxNext1.Text = Next1;
+                    BoxNext1.Enabled = true;
+                    BoxAnswer2.Text = "";
+                    BoxAnswer2.Enabled = false;
+                    BoxNext2.Text = "0";
+                    BoxNext2.Enabled = false;
+                    BoxAnswer3.Text = "";
+                    BoxAnswer3.Enabled = false;
+                    BoxNext3.Text = "0";
+                    BoxNext3.Enabled = false;
+                    break;
+                case 1: //Ok question
                     BoxAnswer1.Text = "Ok";
                     BoxAnswer1.Enabled = false;
                     BoxNext1.Text = Next1;
                     BoxNext1.Enabled = true;
                     BoxAnswer2.Text = "";
                     BoxAnswer2.Enabled = false;
-                    BoxNext2.Text = "-1";
+                    BoxNext2.Text = "0";
                     BoxNext2.Enabled = false;
                     BoxAnswer3.Text = "";
                     BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
+                    BoxNext3.Text = "0";
                     BoxNext3.Enabled = false;
                     break;
-                case 1: //Yes-No question
+                case 2: //Yes-No question
                     BoxAnswer1.Text = "Yes";
                     BoxAnswer1.Enabled = false;
                     BoxNext1.Text = Next1;
@@ -297,10 +312,10 @@ namespace WindowsFormsApplication1
                     BoxNext2.Enabled = true;
                     BoxAnswer3.Text = "";
                     BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
+                    BoxNext3.Text = "0";
                     BoxNext3.Enabled = false;
                     break;
-                case 2: //Multiple choice question
+                case 3: //Multiple choice question
                     BoxAnswer1.Text = Answer1;
                     BoxAnswer1.Enabled = true;
                     BoxNext1.Text = Next1;
@@ -313,20 +328,6 @@ namespace WindowsFormsApplication1
                     BoxAnswer3.Enabled = true;
                     BoxNext3.Text = Next3;
                     BoxNext3.Enabled = true;
-                    break;
-                case 3: //Open question
-                    BoxAnswer1.Text = Answer1;
-                    BoxAnswer1.Enabled = true;
-                    BoxNext1.Text = Next1;
-                    BoxNext1.Enabled = true;
-                    BoxAnswer2.Text = "";
-                    BoxAnswer2.Enabled = false;
-                    BoxNext2.Text = "-1";
-                    BoxNext2.Enabled = false;
-                    BoxAnswer3.Text = "";
-                    BoxAnswer3.Enabled = false;
-                    BoxNext3.Text = "-1";
-                    BoxNext3.Enabled = false;
                     break;
             }
         }
@@ -406,7 +407,7 @@ namespace WindowsFormsApplication1
             foreach (var questionbox in questions)
             {
                 RadioButton b = new RadioButton();
-                b.Text = questionbox.name;
+                b.Text = questionbox.index + " : " + questionbox.name;
                 b.Dock = DockStyle.Fill;
                 b.Click += (s, e) =>
                 {
@@ -415,7 +416,7 @@ namespace WindowsFormsApplication1
                 tableOverview.RowCount = questions.Count;
                 tableOverview.Controls.Add(b, 0, row);
                 
-                if (questionbox.next1 != -1)
+                if (questionbox.next1 != 0)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
@@ -428,7 +429,7 @@ namespace WindowsFormsApplication1
                     tableOverview.Controls.Add(l, 1, row);
                 }
 
-                if (questionbox.next2 != -1)
+                if (questionbox.next2 != 0)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
@@ -440,7 +441,7 @@ namespace WindowsFormsApplication1
                     $"Next Question : {questionbox.next2.ToString()}";
                     tableOverview.Controls.Add(l, 1, row);
                 }
-                if (questionbox.next3 != -1)
+                if (questionbox.next3 != 0)
                 {
                     Label l = new Label();
                     l.Dock = DockStyle.Fill;
