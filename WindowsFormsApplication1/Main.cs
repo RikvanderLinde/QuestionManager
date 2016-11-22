@@ -23,6 +23,7 @@ namespace WindowsFormsApplication1
         {
             public int index;
             public string name;
+            public string descrip;
             public int type;
             public string answer1;
             public int next1;
@@ -84,6 +85,9 @@ namespace WindowsFormsApplication1
         private void butSelect_Click(object sender, EventArgs e)
         {
             tabs.SelectedTab = tabOverview;
+            myConnection.ChangeDatabase("qst_" + listQuestionLists.SelectedItem.ToString());
+            fill();
+            Main.ActiveForm.Text = "Database selected : " + listQuestionLists.SelectedItem.ToString();
         }
 
         //Popup
@@ -108,7 +112,7 @@ namespace WindowsFormsApplication1
         //Database Add
         private void butAdd_Click(object sender, EventArgs e)
         {
-            string name = "qst_" +ShowMyDialogBox();
+            string name = "qst_" + ShowMyDialogBox();
             try
             {
                 MySqlCommand myCommand = new MySqlCommand($"CREATE DATABASE {name}", myConnection);
@@ -116,16 +120,37 @@ namespace WindowsFormsApplication1
                 databaseGet();
 
                 #region tables
-                string command =
+                string comquestion =
                   "USE "+name+";CREATE TABLE questions"
                 + "("
                 + "ID int NOT NULL AUTO_INCREMENT,"
-                + "LastName varchar(255) NOT NULL,"
-                + "FirstName varchar(255),"
-                + "Address varchar(255),"
-                + "City varchar(255),"
+                + "Question varchar(100),"
+                + "Description varchar(500),"
+                + "Type int (2),"
+                + "Answer1 varchar (100),"
+                + "Next1 int (2),"
+                + "Answer2 varchar (100),"
+                + "Next2 int (2),"
+                + "Answer3 varchar (100),"
+                + "Next3 int (2),"
                 + "PRIMARY KEY(ID)"
                 + ")";
+
+                string comanswers =
+                  "USE " + name + ";CREATE TABLE answers"
+                + "("
+                + "ID int NOT NULL AUTO_INCREMENT,"
+                + "User varchar(100) NOT NULL,"
+                + "Date varchar(20),"
+                + "question int (2),"
+                + "Answer varchar (100),"
+                + "PRIMARY KEY(ID)"
+                + ")";
+
+                MySqlCommand myQuestion = new MySqlCommand(comquestion, myConnection);
+                myQuestion.ExecuteNonQuery();
+                MySqlCommand myAnswers = new MySqlCommand(comanswers, myConnection);
+                myAnswers.ExecuteNonQuery();
                 #endregion
             }
             catch (Exception f)
@@ -144,7 +169,7 @@ namespace WindowsFormsApplication1
             }
             catch { }
 
-            if(select != "")
+            if(select != "" && !select.Contains("users"))
             {
                 select = "qst_" + select;
                 if (DialogResult.Yes == MessageBox.Show("Are you sure you want to remove the database?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
@@ -174,7 +199,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                MySqlCommand myCommand = new MySqlCommand("select * from questions RIGHT JOIN answers ON questions.ID = answers.ID;", myConnection);
+                MySqlCommand myCommand = new MySqlCommand("select * from questions", myConnection);
                 MySqlDataReader myReader = myCommand.ExecuteReader();
                 while (myReader.Read())
                 {
@@ -183,14 +208,14 @@ namespace WindowsFormsApplication1
 
                     if (!myReader.IsDBNull(0)) Id       = myReader.GetString(0);
                     if (!myReader.IsDBNull(1)) Question = myReader.GetString(1);
-                    if (!myReader.IsDBNull(2)) Type     = myReader.GetString(2);
-                    if (!myReader.IsDBNull(3)) Info     = myReader.GetString(3);
-                    if (!myReader.IsDBNull(5)) Answer1  = myReader.GetString(5);
-                    if (!myReader.IsDBNull(6)) Next1    = myReader.GetString(6);
-                    if (!myReader.IsDBNull(7)) Answer2  = myReader.GetString(7);
-                    if (!myReader.IsDBNull(8)) Next2    = myReader.GetString(8);
-                    if (!myReader.IsDBNull(9)) Answer3  = myReader.GetString(9);
-                    if (!myReader.IsDBNull(10)) Next3   = myReader.GetString(10);
+                    if (!myReader.IsDBNull(2)) Info     = myReader.GetString(2);
+                    if (!myReader.IsDBNull(3)) Type     = myReader.GetString(3);
+                    if (!myReader.IsDBNull(4)) Answer1  = myReader.GetString(4);
+                    if (!myReader.IsDBNull(5)) Next1    = myReader.GetString(5);
+                    if (!myReader.IsDBNull(6)) Answer2  = myReader.GetString(6);
+                    if (!myReader.IsDBNull(7)) Next2    = myReader.GetString(7);
+                    if (!myReader.IsDBNull(8)) Answer3  = myReader.GetString(8);
+                    if (!myReader.IsDBNull(9)) Next3    = myReader.GetString(9);
 
                     text_Questions.Text = text_Questions.Text + $"ID: {Id}\t Question: {Question}\t Type: {Type}\t Info: {Info}\n";
                     
@@ -212,19 +237,20 @@ namespace WindowsFormsApplication1
         {
             try
             {
-                MySqlCommand myCommand = new MySqlCommand($"select questions.question,questions.type,questions.info,answers.answer1,answers.next1,answers.answer2,answers.next2,answers.answer3,answers.next3 from questions RIGHT JOIN answers ON questions.ID = answers.ID where questions.ID = {selected}", myConnection);
+                MySqlCommand myCommand = new MySqlCommand($"select * from questions where ID = {selected}", myConnection);
                 MySqlDataReader myReader = myCommand.ExecuteReader();
                 while (myReader.Read())
                 {
-                    if (!myReader.IsDBNull(0)) BoxQuestion.Text = myReader.GetString(0);
-                    if (!myReader.IsDBNull(1)) ComboBoxType.SelectedIndex = myReader.GetInt32(1);
-                    if (!myReader.IsDBNull(2)) BoxInfo.Text     = myReader.GetString(2);
-                    if (!myReader.IsDBNull(3)) BoxAnswer1.Text  = myReader.GetString(3);
-                    if (!myReader.IsDBNull(4)) BoxNext1.Text    = myReader.GetInt32(4).ToString();
-                    if (!myReader.IsDBNull(5)) BoxAnswer2.Text  = myReader.GetString(5);
-                    if (!myReader.IsDBNull(6)) BoxNext2.Text    = myReader.GetInt32(6).ToString();
-                    if (!myReader.IsDBNull(7)) BoxAnswer3.Text  = myReader.GetString(7);
-                    if (!myReader.IsDBNull(8)) BoxNext3.Text    = myReader.GetInt32(8).ToString();
+                    //if (!myReader.IsDBNull(0)) BoxQuestion.Text = myReader.GetString(0);
+                    if (!myReader.IsDBNull(1)) BoxQuestion.Text = myReader.GetString(1);
+                    if (!myReader.IsDBNull(2)) BoxInfo.Text = myReader.GetString(2);
+                    if (!myReader.IsDBNull(3)) ComboBoxType.SelectedIndex = myReader.GetInt32(3);
+                    if (!myReader.IsDBNull(4)) BoxAnswer1.Text  = myReader.GetString(4);
+                    if (!myReader.IsDBNull(5)) BoxNext1.Text    = myReader.GetInt32(5).ToString();
+                    if (!myReader.IsDBNull(6)) BoxAnswer2.Text  = myReader.GetString(6);
+                    if (!myReader.IsDBNull(7)) BoxNext2.Text    = myReader.GetInt32(7).ToString();
+                    if (!myReader.IsDBNull(8)) BoxAnswer3.Text  = myReader.GetString(8);
+                    if (!myReader.IsDBNull(9)) BoxNext3.Text    = myReader.GetInt32(9).ToString();
                 }
                 myReader.Close();
             }
@@ -319,6 +345,22 @@ namespace WindowsFormsApplication1
             Info = BoxInfo.Text;
         }
 
+        //Edit Question
+        private void butEdit_Click(object sender, EventArgs e)
+        {
+            save();
+            try
+            {
+                MySqlCommand myCommand = new MySqlCommand($"update questions set Question='{Question}', Type='{Type}', Description ='{Info}',Answer1='{Answer1}', Next1='{Next1}', Answer2='{Answer2}', Next2='{Next2}', Answer3='{Answer3}', Next3='{Next3}'  where ID = {selected}", myConnection);
+                myCommand.ExecuteNonQuery();
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine(f.ToString());
+            }
+            tabs.SelectedTab = tabOverview;
+        }
+
         #endregion
 
         #region Overview Tab
@@ -328,20 +370,21 @@ namespace WindowsFormsApplication1
             questions.Clear();
             try
             {
-                MySqlCommand myCommand = new MySqlCommand(Properties.Resources.QueryFillClass, myConnection);
+                MySqlCommand myCommand = new MySqlCommand("select * from questions", myConnection);
                 MySqlDataReader myReader = myCommand.ExecuteReader();
                 while (myReader.Read())
                 {
                     questionbox box = new questionbox();
                     if (!myReader.IsDBNull(0)) box.index    = myReader.GetInt32(0);
                     if (!myReader.IsDBNull(1)) box.name     = myReader.GetString(1);
-                    if (!myReader.IsDBNull(2)) box.type     = myReader.GetInt32(2);
-                    if (!myReader.IsDBNull(3)) box.answer1  = myReader.GetString(3);
-                    if (!myReader.IsDBNull(4)) box.next1    = myReader.GetInt32(4);
-                    if (!myReader.IsDBNull(5)) box.answer2  = myReader.GetString(5);
-                    if (!myReader.IsDBNull(6)) box.next2    = myReader.GetInt32(6);
-                    if (!myReader.IsDBNull(7)) box.answer3  = myReader.GetString(7);
-                    if (!myReader.IsDBNull(8)) box.next3    = myReader.GetInt32(8);
+                    if (!myReader.IsDBNull(2)) box.descrip  = myReader.GetString(2);
+                    if (!myReader.IsDBNull(3)) box.type     = myReader.GetInt32(3);
+                    if (!myReader.IsDBNull(4)) box.answer1  = myReader.GetString(4);
+                    if (!myReader.IsDBNull(5)) box.next1    = myReader.GetInt32(5);
+                    if (!myReader.IsDBNull(6)) box.answer2  = myReader.GetString(6);
+                    if (!myReader.IsDBNull(7)) box.next2    = myReader.GetInt32(7);
+                    if (!myReader.IsDBNull(8)) box.answer3  = myReader.GetString(8);
+                    if (!myReader.IsDBNull(9)) box.next3    = myReader.GetInt32(9);
                     questions.Add(box);
                 }
                 myReader.Close();
@@ -414,66 +457,13 @@ namespace WindowsFormsApplication1
             tableOverview.Visible = true;
         }
 
-        //Edit Question
-        private void butEdit_Click(object sender, EventArgs e)
-        {
-            save();
-            try
-            {
-                MySqlCommand myCommand = new MySqlCommand($"update questions set Question='{Question}', Type='{Type}', Info ='{Info}' where ID = {selected}", myConnection);
-                myCommand.ExecuteNonQuery();
-            }
-            catch (Exception f)
-            {
-                Console.WriteLine(f.ToString());
-            }
-            try
-            {
-                MySqlCommand myCommand2 = new MySqlCommand($"update answers set Answer1='{Answer1}', Next1='{Next1}', Answer2='{Answer2}', Next2='{Next2}', Answer3='{Answer3}', Next3='{Next3}' where ID = {selected}", myConnection);
-                myCommand2.ExecuteNonQuery();
-            }
-            catch (Exception f)
-            {
-                Console.WriteLine(f.ToString());
-            }
-            tabs.SelectedTab = tabOverview;
-        }
-
         //Add Question
         private void butaddq_Click(object sender, EventArgs e)
         {
             try
             {
-                MySqlCommand myCommand = new MySqlCommand("INSERT INTO questions (Question,Type) VALUES ('CHANGE', 0)", myConnection);
+                MySqlCommand myCommand = new MySqlCommand("INSERT INTO questions (Question,Type) VALUES ('Change me!', 0)", myConnection);
                 myCommand.ExecuteNonQuery();
-            }
-            catch (Exception f)
-            {
-                Console.WriteLine(f.ToString());
-            }
-            string index = "0";
-            try
-            {
-                MySqlCommand myCommand = new MySqlCommand("SELECT ID FROM questions WHERE Question = 'CHANGE' LIMIT 1", myConnection);
-                index = myCommand.ExecuteScalar().ToString();
-                try
-                {
-                    MySqlCommand myCommand2 = new MySqlCommand($"INSERT INTO answers (ID) VALUES({index})", myConnection);
-                    myCommand2.ExecuteNonQuery();
-                }
-                catch (Exception f)
-                {
-                    Console.WriteLine(f.ToString());
-                }
-                try
-                {
-                    MySqlCommand myCommand2 = new MySqlCommand($"update questions set Question='Change me!' where ID = {index}", myConnection);
-                    myCommand2.ExecuteNonQuery();
-                }
-                catch (Exception f)
-                {
-                    Console.WriteLine(f.ToString());
-                }
             }
             catch (Exception f)
             {
@@ -490,18 +480,8 @@ namespace WindowsFormsApplication1
             {
                 try
                 {
-                    MySqlCommand myCommand2 = new MySqlCommand($"delete from questions where ID = {selected}", myConnection);
-                    myCommand2.ExecuteNonQuery();
-                }
-                catch (Exception f)
-                {
-                    Console.WriteLine(f.ToString());
-                }
-
-                try
-                {
-                    MySqlCommand myCommand2 = new MySqlCommand($"delete from answers where ID = {selected}", myConnection);
-                    myCommand2.ExecuteNonQuery();
+                    MySqlCommand myCommand = new MySqlCommand($"delete from questions where ID = {selected}", myConnection);
+                    myCommand.ExecuteNonQuery();
                 }
                 catch (Exception f)
                 {

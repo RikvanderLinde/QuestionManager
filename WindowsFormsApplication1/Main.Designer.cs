@@ -81,7 +81,7 @@
             this.text_Questions = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.answersTableAdapter1 = new WindowsFormsApplication1.appDataSetTableAdapters.answersTableAdapter();
+            this.tabUsers = new System.Windows.Forms.TabPage();
             this.tabs.SuspendLayout();
             this.tabConnection.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -118,12 +118,14 @@
             this.tabs.Controls.Add(this.tabOverview);
             this.tabs.Controls.Add(this.tabQuestion);
             this.tabs.Controls.Add(this.tabDatabase);
+            this.tabs.Controls.Add(this.tabUsers);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabs.Location = new System.Drawing.Point(0, 0);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(573, 419);
             this.tabs.TabIndex = 0;
+            this.tabs.SelectedIndexChanged += new System.EventHandler(this.tabs_SelectedIndexChanged);
             // 
             // tabConnection
             // 
@@ -253,7 +255,7 @@
             this.BoxServer.Name = "BoxServer";
             this.BoxServer.Size = new System.Drawing.Size(345, 20);
             this.BoxServer.TabIndex = 3;
-            this.BoxServer.Text = "192.168.178.71";
+            this.BoxServer.Text = "84.24.118.152";
             // 
             // splitContainer3
             // 
@@ -684,10 +686,10 @@
             // text_Answers
             // 
             this.text_Answers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.text_Answers.Location = new System.Drawing.Point(3, 147);
+            this.text_Answers.Location = new System.Drawing.Point(3, 204);
             this.text_Answers.Name = "text_Answers";
             this.text_Answers.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.text_Answers.Size = new System.Drawing.Size(559, 118);
+            this.text_Answers.Size = new System.Drawing.Size(559, 181);
             this.text_Answers.TabIndex = 2;
             this.text_Answers.Text = "";
             // 
@@ -695,7 +697,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(3, 134);
+            this.label2.Location = new System.Drawing.Point(3, 191);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 3;
@@ -707,7 +709,7 @@
             this.text_Questions.Location = new System.Drawing.Point(3, 16);
             this.text_Questions.Name = "text_Questions";
             this.text_Questions.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.text_Questions.Size = new System.Drawing.Size(559, 118);
+            this.text_Questions.Size = new System.Drawing.Size(559, 175);
             this.text_Questions.TabIndex = 0;
             this.text_Questions.Text = "";
             // 
@@ -726,9 +728,14 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // answersTableAdapter1
+            // tabUsers
             // 
-            this.answersTableAdapter1.ClearBeforeFill = true;
+            this.tabUsers.Location = new System.Drawing.Point(4, 22);
+            this.tabUsers.Name = "tabUsers";
+            this.tabUsers.Size = new System.Drawing.Size(565, 393);
+            this.tabUsers.TabIndex = 4;
+            this.tabUsers.Text = "Users";
+            this.tabUsers.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -737,7 +744,7 @@
             this.ClientSize = new System.Drawing.Size(573, 419);
             this.Controls.Add(this.tabs);
             this.Name = "Main";
-            this.Text = "Form1";
+            this.Text = "Select Database";
             this.tabs.ResumeLayout(false);
             this.tabConnection.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -804,7 +811,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableOverview;
-        private appDataSetTableAdapters.answersTableAdapter answersTableAdapter1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.TextBox BoxNext3;
@@ -833,6 +839,7 @@
         private System.Windows.Forms.Button butSelect;
         private System.Windows.Forms.Button butAdd;
         private System.Windows.Forms.Button butRemove;
+        private System.Windows.Forms.TabPage tabUsers;
     }
 }
 

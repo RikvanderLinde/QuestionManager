@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace WindowsFormsApplication1 {
+namespace DatabaseFiller {
     
     
     /// <summary>
@@ -1506,7 +1506,7 @@ namespace WindowsFormsApplication1 {
         }
     }
 }
-namespace WindowsFormsApplication1.appDataSetTableAdapters {
+namespace DatabaseFiller.appDataSetTableAdapters {
     
     
     /// <summary>
@@ -1633,7 +1633,7 @@ namespace WindowsFormsApplication1.appDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::MySql.Data.MySqlClient.MySqlConnection();
-            this._connection.ConnectionString = global::WindowsFormsApplication1.Properties.Settings.Default.appConnectionString;
+            this._connection.ConnectionString = global::DatabaseFiller.Properties.Settings.Default.appConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1795,7 +1795,7 @@ namespace WindowsFormsApplication1.appDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::MySql.Data.MySqlClient.MySqlConnection();
-            this._connection.ConnectionString = global::WindowsFormsApplication1.Properties.Settings.Default.appConnectionString;
+            this._connection.ConnectionString = global::DatabaseFiller.Properties.Settings.Default.appConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1957,7 +1957,7 @@ namespace WindowsFormsApplication1.appDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::MySql.Data.MySqlClient.MySqlConnection();
-            this._connection.ConnectionString = global::WindowsFormsApplication1.Properties.Settings.Default.appConnectionString;
+            this._connection.ConnectionString = global::DatabaseFiller.Properties.Settings.Default.appConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2119,7 +2119,7 @@ namespace WindowsFormsApplication1.appDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::MySql.Data.MySqlClient.MySqlConnection();
-            this._connection.ConnectionString = global::WindowsFormsApplication1.Properties.Settings.Default.appConnectionString;
+            this._connection.ConnectionString = global::DatabaseFiller.Properties.Settings.Default.appConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsFormsApplication1.Properties {
+namespace DatabaseFiller.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WindowsFormsApplication1.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WindowsFormsApplication1.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DatabaseFiller.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,15 +57,6 @@ namespace WindowsFormsApplication1.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to select questions.ID,questions.question,questions.type,answers.answer1,answers.next1,answers.answer2,answers.next2,answers.answer3,answers.next3 from questions RIGHT JOIN answers ON questions.ID = answers.ID.
-        /// </summary>
-        internal static string QueryFillClass {
-            get {
-                return ResourceManager.GetString("QueryFillClass", resourceCulture);
             }
         }
     }

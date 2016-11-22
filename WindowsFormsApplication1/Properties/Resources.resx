@@ -117,8 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="QueryFillClass" xml:space="preserve">
-    <value>select questions.ID,questions.question,questions.type,answers.answer1,answers.next1,answers.answer2,answers.next2,answers.answer3,answers.next3 from questions RIGHT JOIN answers ON questions.ID = answers.ID</value>
-    <comment>Query to fill the class</comment>
-  </data>
 </root>
